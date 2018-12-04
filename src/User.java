@@ -13,7 +13,7 @@ public class User {
 	
 	private String firstName;
 	private String lastName;
-	private int pin;
+	private String pin;
 	private String birthDate;
 	private long phoneNumber;
 	private String address;
@@ -22,7 +22,7 @@ public class User {
 	private String postalCode;
 	
 	//Constructor
-	public User(String firstName, String lastName, int pin, String birthDate, long phoneNumber, String address, String city, String state, String postalCode) {
+	public User(String firstName, String lastName, String pin, String birthDate, long phoneNumber, String address, String city, String state, String postalCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.pin = pin;
@@ -41,7 +41,7 @@ public class User {
 	public String getLastName() {
 		return lastName;
 	}
-	public int getPin() {
+	public String getPin() {
 		return pin;
 	}
 	public String getBirthDate() {
@@ -70,7 +70,7 @@ public class User {
 	public void setLasttName(String lastName) {
 		this.lastName = lastName;
 	}
-	public void setPin(int pin) {
+	public void setPin(String pin) {
 		if(validate() == true) {
 			this.pin = pin;
 		}

@@ -19,7 +19,7 @@ public class Database {
 			long accountNumber = Long.parseLong(line.substring(0, 9));
 			String firstName = line.substring(48, 63).replaceAll("\\s","");
 			String lastName = line.substring(28, 48).replaceAll("\\s","");
-			int pin = Integer.parseInt(line.substring(9, 13));
+			String pin = line.substring(9, 13);
 			String birthDate = line.substring(63, 71);
 			long phoneNumber = Long.parseLong(line.substring(71, 81));
 			String address = line.substring(81, 111).replaceAll("\\s","");
@@ -78,16 +78,71 @@ public class Database {
 			br.readLine();
 			counter++;
 		}
-		return br.readLine();
+		String line = br.readLine();
+		br.close();
+		fr.close();
+		return line;
 	}
-	public boolean accountValidate(long accountNumber, int pin) {
+	public void writeLine(String firstName, String lastName, String pin, String birthDate, String phoneNumber, String address, String city, String state, String postalCode) throws IOException {
+		String fileName = "C:\\Users\\lvoor\\Desktop\\APCSA\\pset5\\accounts-db.txt";
+		File file = new File(fileName);
+		FileWriter fr = new FileWriter(file, true);
+		BufferedWriter br = new BufferedWriter(fr);
+		String input = "\n" + Long.toString(100000001 + numberOfAccounts) + 
+				                     pin + 
+				                     String.format("%-15s", "0.00") + 
+				                     String.format("%-20s", lastName) +
+				                     String.format("%-15s", firstName) + 
+				                     String.format("%-8s", birthDate) + 
+				                     String.format("%-10s", phoneNumber) + 
+				                     String.format("%-30s", address) + 
+				                     String.format("%-30s", city) + 
+				                     state +
+				                     postalCode +
+				                     "Y";
+		br.write(input);
+		br.close();
+		fr.close();
+	}
+	public boolean accountValidate(long accountNumber, String pin) {
 		for(int i = 0; i < numberOfAccounts; i++) {
-			if(true/*accountNumber == accounts[i].getAccountNumber() && pin == accounts[i].getUser().getPin()*/) {
+			//if(accountNumber == accounts[i].getAccountNumber() && pin.equals(accounts[i].getUser().getPin())) {
+			if(true) {
 				currentAccount = i;
 				return true;
 			}
 		}
 		return false;
+	}
+	public void updateDatabase(String newLine/*, String oldLine*/) throws IOException {
+		String newText[] = new String[numberOfAccounts];
+		for(int i = 0; i < numberOfAccounts; i++) {
+			if(i == currentAccount) {
+				newText[i] = newLine;
+			}
+			else {
+				newText[i] = readLine(i);
+			}
+		}
+		PrintWriter writer = new PrintWriter("C:\\Users\\lvoor\\Desktop\\APCSA\\pset5\\accounts-db.txt");
+		writer.print("");
+		writer.close();
+		
+		String fileName = "C:\\Users\\lvoor\\Desktop\\APCSA\\pset5\\accounts-db.txt";
+		File file = new File(fileName);
+		FileWriter fr = new FileWriter(file, true);
+		BufferedWriter br = new BufferedWriter(fr);
+		
+		for(int i = 0; i < numberOfAccounts; i++) {
+			if(i == 0) {
+				br.write(newText[i]);
+			}
+			else{
+				br.write("\n".concat(newText[i]));
+			}
+		}
+		br.close();
+		fr.close();
 	}
 	public BankAccount getAccount(int i) {
 		return accounts[i];
@@ -95,62 +150,7 @@ public class Database {
 	public int getCurrentAccount() {
 		return currentAccount;
 	}
-	/*private BankAccount account[];
-	public Database() {
-		//Set up accounts
-	}*/
-	//Make an array of BankAccounts which is created when the ATM is launched
-	//Methods
-	/*public void createAccount(String firstName, String lastName, int pin, String birthDate, int phoneNumber, String address, String city, String state, int postalCode) {
-		//Appends the file; Might change to boolean to check if input is valid
+	public void setCurrentAccount(int currentAccount) {
+		this.currentAccount = currentAccount;
 	}
-	public boolean validateLogin(long accountNumber, int pin) {
-		
-	}
-	public String retrieveFirstName() {
-		
-	}
-	public String retrieveLastName() {
-		
-	}
-	public int retrievePin() {
-		
-	}
-	public String retrieveBirthDate() {
-		
-	}
-	public int retrievePhoneNumber() {
-		
-	}
-	public String retrieveAddress() {
-		
-	}
-	public String retrieveCity() {
-		
-	}
-	public String retrieveState() {
-		
-	}
-	public int retrievePostalCode() {
-		
-	}
-	public long retrieveAccountNumber() {
-		
-	}
-	public double retrieveBalance() {
-		
-	}*/
-	 
-	/*public BankAccount getBankAccount(int i) {
-		return account[i];
-	}
-	public void databaseInitialization() {
-		for(int i = 0; i < ADD CONDITION; i++) {
-			account[i] = 
-		}
-	}
-	
-	public void createAccount() {
-		
-	}*/
 }
