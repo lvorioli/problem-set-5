@@ -20,7 +20,7 @@ public class Tester {
 		 * from our very primitive database (i.e., a flat-file). After making changes, of course,
 		 * you'll need to update the database accordingly.
 		 */
-		ATM atm = new ATM(new Database());
+		ATM atm = new ATM(new Database(-1));
 		atm.interactATM();
 		//Database data = new Database();
 

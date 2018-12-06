@@ -13,13 +13,14 @@ public class BankAccount {
 	private long accountNumber;
 	private User user;
 	private double balance;
-	private char status;
+	private char accountStatus;
 	
 	//Constructor
-	public BankAccount(long accountNumber, User user, double balance, char status) {
+	public BankAccount(long accountNumber, User user, double balance, char accountStatus) {
 		this.accountNumber = accountNumber;
 		this.user = user;
 		this.balance = balance;
+		this.accountStatus = accountStatus;
 	}
 	
 	//Getters
@@ -32,6 +33,9 @@ public class BankAccount {
 	public double getBalance() {
 		return balance;
 	}
+	public char getAccountStatus() {
+		return accountStatus;
+	}
 	
 	//Setters
 	public void setAccountNumber(long accountNumber) {
@@ -42,6 +46,9 @@ public class BankAccount {
 	}
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+	public void setAccountStatus(char accountStatus) {
+		this.accountStatus = accountStatus;
 	}
 	
 	//Methods
@@ -64,8 +71,5 @@ public class BankAccount {
 			
 			return 2;
 		}
-	}
-	public int transfer(double amount, BankAccount account) {
-		
 	}
 }

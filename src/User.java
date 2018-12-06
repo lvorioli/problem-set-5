@@ -67,13 +67,15 @@ public class User {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	public void setLasttName(String lastName) {
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public void setPin(String pin) {
-		if(validate() == true) {
+	public int setPin(String pin, String currentPin) {
+		if(this.pin.equals(currentPin)) {
 			this.pin = pin;
+			return 1;
 		}
+		return 0;
 	}
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
@@ -92,15 +94,5 @@ public class User {
 	}
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
-	}
-	//methods
-	public boolean validate() {
-		currentPin = in.nextInt();
-		if(currentPin == this.pin) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 }

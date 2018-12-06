@@ -11,7 +11,8 @@ public class Database {
 	private BankAccount[] accounts;
 	private int currentAccount;
 	
-	public Database() throws IOException {
+	public Database(int currentAccount) throws IOException, NumberFormatException {
+		this.currentAccount = currentAccount;
 		readNumberOfLines();
 		accounts = new BankAccount[numberOfAccounts];
 		for(int i = 0; i < numberOfAccounts; i++) {
@@ -106,15 +107,14 @@ public class Database {
 	}
 	public boolean accountValidate(long accountNumber, String pin) {
 		for(int i = 0; i < numberOfAccounts; i++) {
-			//if(accountNumber == accounts[i].getAccountNumber() && pin.equals(accounts[i].getUser().getPin())) {
-			if(true) {
+			if(accounts[i].getAccountStatus() == 'Y' && (accountNumber == accounts[i].getAccountNumber() && pin.equals(accounts[i].getUser().getPin()))) {
 				currentAccount = i;
 				return true;
 			}
 		}
 		return false;
 	}
-	public void updateDatabase(String newLine/*, String oldLine*/) throws IOException {
+	public void updateDatabase(String newLine) throws IOException {
 		String newText[] = new String[numberOfAccounts];
 		for(int i = 0; i < numberOfAccounts; i++) {
 			if(i == currentAccount) {
@@ -152,5 +152,13 @@ public class Database {
 	}
 	public void setCurrentAccount(int currentAccount) {
 		this.currentAccount = currentAccount;
+	}
+	public int findAccount(long accountNumber) {
+		for(int i = 0; i < numberOfAccounts; i++) {
+			if((accountNumber == accounts[i].getAccountNumber()) && accounts[i].getAccountStatus() == 'Y') {
+				return i;
+			}
+		}
+		return -1;
 	}
 }
