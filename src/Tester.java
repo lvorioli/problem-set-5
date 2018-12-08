@@ -22,7 +22,6 @@ public class Tester {
 		 */
 		ATM atm = new ATM(new Database(-1));
 		atm.interactATM();
-		//Database data = new Database();
 
 	}
 }

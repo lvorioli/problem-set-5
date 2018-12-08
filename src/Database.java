@@ -45,18 +45,6 @@ public class Database {
 							  balance,
 							  accountStatus
 							  );
-			/*System.out.println(accountNumber);
-			System.out.println(firstName);
-			System.out.println(lastName);
-			System.out.println(pin);
-			System.out.println(birthDate);
-			System.out.println(phoneNumber);
-			System.out.println(address);
-			System.out.println(city);
-			System.out.println(state);
-			System.out.println(postalCode);
-			System.out.println(accountStatus);*/
-			
 		}
 	}
 	public void readNumberOfLines() throws IOException {

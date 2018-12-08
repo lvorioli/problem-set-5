@@ -70,13 +70,6 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	/*public int setPin(String pin, String currentPin) {
-		if(this.pin.equals(currentPin)) {
-			this.pin = pin;
-			return 1;
-		}
-		return 0;
-	}*/
 	public void setPin(String pin) {
 		this.pin = pin;
 	}
