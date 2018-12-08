@@ -60,56 +60,86 @@ public class ATM {
 			System.out.print("\n\n\n\n\nSession Terminated");
 			break;
 		default:
-			System.out.println("Invalid Selection");
+			System.out.println("\n\nInvalid Selection\n");
 			displayMainMenu();
 			break;
 		}
 		
 	}
 	public void openAccount() throws IOException {
-		System.out.print("\n\n\n\n\n");
-		System.out.print("First Name: ");
-		in.nextLine();
-		String firstName = in.nextLine();
-		System.out.print("\nLast Name: ");
-		String lastName = in.nextLine();
-		System.out.print("\nPin: ");
-		String pin = in.nextLine();
-		System.out.print("\nBirth Date: ");
-		String birthDate = in.nextLine();
-		System.out.print("\nPhone Number: ");
-		String phoneNumber = in.nextLine();
-		System.out.print("\nAddress: ");
-		String address = in.nextLine();
-		System.out.print("\nCity: ");
-		String city = in.nextLine();
-		System.out.print("\nState: ");
-		String state = in.nextLine();
-		System.out.print("\nPostal Code: ");
-		String postalCode = in.nextLine();
+		int i = 0;
+		String firstName;
+		String lastName;
+		String pin;
+		String birthDate;
+		String phoneNumber;
+		String address;
+		String city;
+		String state;
+		String postalCode;
+		System.out.print("\n\n\n");
+		do {
+			System.out.print("\n\n");
+			System.out.print("First Name: ");
+			if(i == 0) {
+				in.nextLine();
+				i++;
+			}
+			firstName = in.nextLine();
+			System.out.print("\nLast Name: ");
+			lastName = in.nextLine();
+			System.out.print("\nPin: ");
+			pin = in.nextLine();
+			System.out.print("\nBirth Date: ");
+			birthDate = in.nextLine();
+			System.out.print("\nPhone Number: ");
+			phoneNumber = in.nextLine();
+			System.out.print("\nAddress: ");
+			address = in.nextLine().replaceAll("\\s+","");
+			System.out.print("\nCity: ");
+			city = in.nextLine().replaceAll("\\s+","");
+			System.out.print("\nState: ");
+			state = in.nextLine();
+			System.out.print("\nPostal Code: ");
+			postalCode = in.nextLine();
+			System.out.print("\n\n");
+		}while(openAccountFormatValidate(firstName, lastName, pin, birthDate, phoneNumber, address, city, state, postalCode) == false);
 		getDatabase().writeLine(firstName, lastName, pin, birthDate, phoneNumber, address, city, state, postalCode);
 		database = new Database(-1);
-		System.out.println("\n\nAccount Successfully Created\n\n\n");
+		System.out.println("Account Successfully Created\n\n\n");
 		displayMainMenu();
 		//getDatabase().createAccount(firstName, lastName, pin, birthDate, phoneNumber, address, city, state, postalCode);
 		//Append database with information
 		//BankAccount newAccount = new BankAccount((long)Math.random(), new User(firstName, lastName, pin, birthdate, phoneNumber, address, city, state, postalCode), 0);
 	}
 	public void login() throws IOException {
-		System.out.print("\n\n\n\n\n");
-		System.out.print("Account number: ");
-		long accountNumber = in.nextLong();
-		System.out.print("\nPin: ");
-		int pin = in.nextInt();
-		if(getDatabase().accountValidate(accountNumber, Long.toString(pin)) == true) {
-			account = getDatabase().getAccount(getDatabase().getCurrentAccount());
-			System.out.println("Welcome, " + getBankAccount().getUser().getFirstName());
-			displaySubMenu();
-		}
-		//DO ELSE LATER
+		System.out.print("\n\n\n");
+		//Change to Strings for checking and for correct pins
+		String accountNumber;
+		String pin;
+		boolean validate;
+		int i = 0;
+		do {
+			System.out.print("\n\nAccount number: ");
+			if(i == 0) {
+				in.nextLine();
+				i++;
+			}
+			accountNumber = in.nextLine();
+			System.out.print("\nPin: ");
+			pin = in.nextLine();
+			validate = getDatabase().accountValidate(accountNumber, pin) && loginFormatValidate(accountNumber, pin);
+			if(validate == false) {
+				System.out.println("\n\nIncorrect Credentials");
+			}
+		}while(validate == false);
+		
+		account = getDatabase().getAccount(getDatabase().getCurrentAccount());
+		System.out.println("\n\n\n\n\nWelcome, " + getBankAccount().getUser().getFirstName() + "\n");
+		displaySubMenu();
 	}
 	public void displaySubMenu() throws IOException {
-		System.out.println("Deposit funds(1)\nWithdraw funds(2)\nTransfer funds(3)\nView balance(4)\nView personal information(5)\nUpdate personal information(6)\nClose account(7)\nLogout(8)\n\nMake a selection: ");
+		System.out.print("Deposit funds(1)\nWithdraw funds(2)\nTransfer funds(3)\nView balance(4)\nView personal information(5)\nUpdate personal information(6)\nClose account(7)\nLogout(8)\n\nMake a selection: ");
 		int selection = in.nextInt();
 		switch(selection) {
 		case 1:
@@ -134,6 +164,7 @@ public class ATM {
 			closeAccount();
 			break;
 		case 8:
+			System.out.print("\n\n\n\n\n");
 			displayMainMenu();
 			break;
 		default:
@@ -142,92 +173,108 @@ public class ATM {
 			break;
 		}
 	}
-	private void viewBalanceMenu() throws IOException {
+	public void viewBalanceMenu() throws IOException {
 		System.out.printf("\n\nBalance Amount: %.2f", account.getBalance());
-		System.out.print("\nExit to menu screen(1)\n\nMake a selection: ");
-		int menuSelection = in.nextInt();
+		System.out.print("\n\nExit to menu screen(ANY KEY)\n\nMake a selection: ");
+		in.nextLine();
+		in.nextLine();
+		System.out.print("\n\n\n\n\n");
 		displaySubMenu();
 	}
 	public void depositMenu() throws IOException {
 		int returnCode = 1;
-		double depositAmount;
+		String depositAmount;
 		//String oldBalance = String.format("%1$-15s",Double.toString(getBankAccount().getBalance()));
-		System.out.print("\n\nDeposit Amount: ");
+		System.out.print("\n\n\n\n\nDeposit Amount: ");
+		in.nextLine();
 		do{
 			if(returnCode == 0) {
-				System.out.println("\nPlease enter a valid deposit amount: ");
+				System.out.print("\n\nPlease enter a valid deposit amount\n\nDeposit Amount: ");
 			}
-			depositAmount = in.nextDouble();
-			returnCode = account.deposit(depositAmount);
+			depositAmount = in.nextLine();
+			if(digitsValidate(depositAmount) == true) {
+				returnCode = account.deposit(Double.parseDouble(depositAmount));
+			}
+			else {
+				returnCode = 0;
+			}
+			
 		}while(returnCode == 0);
 		databaseUpdate();
-		System.out.println("\n$" + depositAmount + " has been deposited.");
+		System.out.printf("\n\n$%.2f has been deposited\n", Double.parseDouble(depositAmount));
 		System.out.print("\nMake another deposit(1)\nExit to menu screen(2)\n\nMake a selection: ");
 		int menuSelection = in.nextInt();
 		if(menuSelection == 1) {
 			depositMenu();
 		}
 		else {
+			System.out.print("\n\n\n\n\n");
 			displaySubMenu();
 		}
 	}
 	public void withdrawMenu() throws IOException {
 		int returnCode = 2;
-		double withdrawAmount;
-		System.out.print("\n\nWithdraw Amount: ");
+		String withdrawAmount;
+		System.out.print("\n\n\n\n\nWithdraw Amount: ");
+		in.nextLine();
 		do{
 			if(returnCode == 1) {
-				System.out.println("\nPlease enter a valid withdraw amount: ");
+				System.out.print("\n\nPlease enter a valid withdraw amount\n\nWithdraw Amount: ");
 			}
 			else if(returnCode == 0) {
-				System.out.println("\nWithdraw amount is too high: ");
+				System.out.print("\n\nWithdraw amount is too high\n\nWithdraw Amount: ");
 			}
-			withdrawAmount = in.nextDouble();
-			returnCode = account.withdraw(withdrawAmount);
+			withdrawAmount = in.nextLine();
+			if(digitsValidate(withdrawAmount) == true) {
+				returnCode = account.withdraw(Double.parseDouble(withdrawAmount));
+			}
+			else {
+				returnCode = 1;
+			}
+			
 		}while(returnCode != 2);
 		databaseUpdate();
-		System.out.println("\n$" + withdrawAmount + " has been withdrawn.");
+		System.out.printf("\n\n$%.2f has been withdrawn\n", Double.parseDouble(withdrawAmount));
 		System.out.print("\nMake another withdraw(1)\nExit to menu screen(2)\n\nMake a selection: ");
 		Double menuSelection = in.nextDouble();
 		if(menuSelection == 1) {
 			withdrawMenu();
 		}
 		else {
+			System.out.print("\n\n\n\n\n");
 			displaySubMenu();
 		}
 	}
 	public void transferMenu() throws IOException {
 		int returnCode = 2;
 		double transferAmount;
-		System.out.print("\n\nTransfer Amount: ");
+		System.out.print("\n\n\n\n\nTransfer Amount: ");
 		do{
 			if(returnCode == 1) {
-				System.out.println("\nPlease enter a valid transfer amount: ");
+				System.out.print("\n\nPlease enter a valid transfer amount\nTansfer Amount: ");
 			}
 			else if(returnCode == 0) {
-				System.out.println("\nInsufficient funds: ");
+				System.out.print("\n\nInsufficient funds\n\nTransfer Amount: ");
 			}
 			transferAmount = in.nextDouble();
 			returnCode = account.withdraw(transferAmount);
 		}while(returnCode != 2);
 		
 		boolean validate = false;
-		long transferAccountNumber;
+		String transferAccountNumber;
+		in.nextLine();
 		do {
-			System.out.print("Recipient's Account Number: ");
-		transferAccountNumber = in.nextLong();
-			if(getDatabase().findAccount(transferAccountNumber) == -1) {
-				System.out.println("Invalid Account");
+			System.out.print("\nRecipient's Account Number: ");
+			transferAccountNumber = in.nextLine();
+			if(getDatabase().findAccount(Long.parseLong(transferAccountNumber)) == getDatabase().getNumberOfAccounts() && digitsValidate(transferAccountNumber) == true) {
+				System.out.println("\n\nInvalid Account");
 			}
 			else {
 				validate = true;
 			}
-		}while(validate = false);
-		
-		//ADD ERROR HANDLING
+		}while(validate == false);
 		databaseUpdate();
-		int transferAccountIndex = getDatabase().findAccount(transferAccountNumber);
-		System.out.println(transferAccountIndex);
+		int transferAccountIndex = getDatabase().findAccount(Long.parseLong(transferAccountNumber));
 		int currentAccountIndex = getDatabase().getCurrentAccount();
 		getDatabase().setCurrentAccount(transferAccountIndex);
 		account = getDatabase().getAccount(getDatabase().getCurrentAccount());
@@ -235,22 +282,31 @@ public class ATM {
 		databaseUpdate();
 		getDatabase().setCurrentAccount(currentAccountIndex);
 		account = getDatabase().getAccount(getDatabase().getCurrentAccount());
-		System.out.println("\n$" + transferAmount + " has been transfered to account " + transferAccountNumber + ".");
+		System.out.printf("\n$%.2f has been transfered to account %s\n", transferAmount, transferAccountNumber);
 		System.out.print("\nMake another transfer(1)\nExit to menu screen(2)\n\nMake a selection: ");
 		Double menuSelection = in.nextDouble();
 		if(menuSelection == 1) {
-			withdrawMenu();
+			transferMenu();
 		}
 		else {
+			System.out.print("\n\n\n\n\n");
 			displaySubMenu();
 		}
 	}
 	public void viewInformation() throws IOException {
-		System.out.println("What Information would you like to see?\nAll(1)\nSelect Information(2)");
-		int menuSelection = in.nextInt();
+		System.out.print("\n\n\n\n");
+		boolean validate = false;
+		int menuSelection;
+		do {
+			System.out.print("\nSee All Information(1)\nSelect Information(2)\n\nMake a selection: ");
+			menuSelection = in.nextInt();
+			if(menuSelection == 1 || menuSelection == 2) {
+				validate = true;
+			}
+		}while(validate == false);
 		switch(menuSelection) {
 		case 1:
-			System.out.println("Account Number: " + 
+			System.out.println("\n\nAccount Number: " + 
 							   account.getAccountNumber() + 
 							   "\nFirst Name: " + 
 							   account.getUser().getFirstName() + 
@@ -272,119 +328,168 @@ public class ATM {
 							   account.getUser().getPostalCode());
 			break;
 		case 2:
-			System.out.println("Account Number(1)\nFirst Name(2)\nLast Name(3)\nPin(4)\nBirth Date(5)\nPhone Number(6)\nAddress(7)\nCity(8)\nState(9)\nPostal Code(10)\n\nMake a selection: ");
+			System.out.print("\n\nAccount Number(1)\nFirst Name(2)\nLast Name(3)\nPin(4)\nBirth Date(5)\nPhone Number(6)\nAddress(7)\nCity(8)\nState(9)\nPostal Code(10)\n\nMake a selection: ");
 			int menuSelection2 = in.nextInt();
 			switch(menuSelection2) {
 			case 1:
-				System.out.println("Account Number: " + account.getAccountNumber());
+				System.out.println("\n\nAccount Number: " + account.getAccountNumber());
 				break;
 			case 2:
-				System.out.println("First Name: " + account.getUser().getFirstName());
+				System.out.println("\n\nFirst Name: " + account.getUser().getFirstName());
 				break;
 			case 3:
-				System.out.println("Last Name: " + account.getUser().getLastName());
+				System.out.println("\n\nLast Name: " + account.getUser().getLastName());
 				break;
 			case 4:
-				System.out.println("Pin: " + account.getUser().getPin());
+				System.out.println("\n\nPin: " + account.getUser().getPin());
 				break;
 			case 5:
-				System.out.println("Birth Date: " + account.getUser().getBirthDate());
+				System.out.println("\n\nBirth Date: " + account.getUser().getBirthDate());
 				break;
 			case 6:
-				System.out.println("Phone Number: " + account.getUser().getPhoneNumber());
+				System.out.println("\n\nPhone Number: " + account.getUser().getPhoneNumber());
 				break;
 			case 7:
-				System.out.println("Address: " + account.getUser().getAddress());
+				System.out.println("\n\nAddress: " + account.getUser().getAddress());
 				break;
 			case 8:
-				System.out.println("City: " + account.getUser().getCity());
+				System.out.println("\n\nCity: " + account.getUser().getCity());
 				break;
 			case 9:
-				System.out.println("State: " + account.getUser().getState());
+				System.out.println("\n\nState: " + account.getUser().getState());
 				break;
 			case 10:
-				System.out.println("Postal Code: " + account.getUser().getPostalCode());
+				System.out.println("\n\nPostal Code: " + account.getUser().getPostalCode());
 				break;
 			}
 			break;
 		}
-		System.out.print("View Information(1)\nExit to menu screen(2)\n\nMake a selection: ");
+		System.out.print("\nView Information(1)\nExit to menu screen(2)\n\nMake a selection: ");
 		int menuSelection2 = in.nextInt();
 		if(menuSelection2 == 1) {
 			viewInformation();
 		}
+		System.out.print("\n\n\n\n\n");
 		displaySubMenu();
 	}
-	
 	public void updateInformation() throws IOException {
-		System.out.println("First Name(1)\nLast Name(2)\nPin(3)\nBirth Date(4)\nPhone Number(5)\nAddress(6)\nCity(7)\nState(8)\nPostal Code(9)\n\nMake a selection: ");
+		System.out.print("\n\n\n\n\nFirst Name(1)\nLast Name(2)\nPin(3)\nBirth Date(4)\nPhone Number(5)\nAddress(6)\nCity(7)\nState(8)\nPostal Code(9)\n\nMake a selection: ");
 		int menuSelection = in.nextInt();
 		switch(menuSelection) {
 		case 1:
-			System.out.print("First Name: ");
-			in.nextLine();
-			String newFirstName = in.nextLine();
+			String newFirstName;
+			do {
+				System.out.print("\n\nFirst Name: ");
+				in.nextLine();
+				newFirstName = in.nextLine();
+			}while(informationUpdateValidate(newFirstName, 0) == false);
 			account.getUser().setFirstName(newFirstName);
 			databaseUpdate();
+			System.out.println("\n\nFirst name updated to " + newFirstName + "\n");
 			break;
 		case 2:
-			System.out.print("Last Name: ");
-			in.nextLine();
-			String newLastName = in.nextLine();
+			String newLastName;
+			do {
+				System.out.print("\n\nLast Name: ");
+				in.nextLine();
+				newLastName = in.nextLine();
+			}while(informationUpdateValidate(newLastName, 1) == false);
 			account.getUser().setLastName(newLastName);
 			databaseUpdate();
+			System.out.println("\n\nLast name updated to " + newLastName + "\n");
 			break;
 		case 3:
-			System.out.print("Current Pin: ");
-			in.nextLine();
-			String currentPin = in.nextLine();
-			System.out.print("New Pin: ");
-			String newPin = in.nextLine();
-			//ADD ERROR HANDLING
-			account.getUser().setPin(newPin, currentPin);
+			String currentPin, newPin;
+			boolean validate = true;
+			do {
+				if(validate == false) {
+					System.out.println("\n\nIncorrect Pin Entered");
+				}
+				do {
+					System.out.print("\n\nCurrent Pin: ");
+					in.nextLine();
+					currentPin = in.nextLine();	
+				}while(informationUpdateValidate(currentPin, 2) == false);
+				if(account.getUser().getPin().equals(currentPin)) {
+					validate = true;
+				}
+				else {
+					validate = false;
+				}
+			}while(validate == false);
+			do {
+				System.out.print("\nNew Pin: ");
+				newPin = in.nextLine();
+			}while(informationUpdateValidate(newPin, 2) == false);
+			account.getUser().setPin(newPin);
 			databaseUpdate();
+			System.out.println("\n\nPIN updated\n");
 			break;
 		case 4:
-			System.out.print("Birth Date: ");
-			in.nextLine();
-			String newBirthDate = in.nextLine();
+			String newBirthDate;
+			do {
+				System.out.print("\n\nBirth Date: ");
+				in.nextLine();
+				newBirthDate = in.nextLine();
+			}while(informationUpdateValidate(newBirthDate, 3) == false);
 			account.getUser().setBirthDate(newBirthDate);
 			databaseUpdate();
+			System.out.println("\n\nBirth date updated to " + newBirthDate + "\n");
 			break;
 		case 5:
-			System.out.print("Phone Number: ");
-			in.nextLine();
-			long newPhoneNumber = in.nextLong();
-			account.getUser().setPhoneNumber(newPhoneNumber);
+			String newPhoneNumber;
+			do {
+				System.out.print("\n\nPhone Number: ");
+				in.nextLine();
+				newPhoneNumber = in.nextLine();
+			}while(informationUpdateValidate(newPhoneNumber, 4) == false);
+			account.getUser().setPhoneNumber(Long.parseLong(newPhoneNumber));
 			databaseUpdate();
+			System.out.println("\n\nPhone number updated to " + newPhoneNumber + "\n");
 			break;
 		case 6:
-			System.out.print("Address: ");
-			in.nextLine();
-			String newAddress = in.nextLine();
+			String newAddress;
+			do {
+				System.out.print("\n\nAddress: ");
+				in.nextLine();
+				newAddress = in.nextLine().replaceAll("\\s+","");
+			}while(informationUpdateValidate(newAddress, 5) == false);
 			account.getUser().setAddress(newAddress);
 			databaseUpdate();
+			System.out.println("\n\nAddress updated to " + newAddress + "\n");
 			break;
 		case 7:
-			System.out.print("City: ");
-			in.nextLine();
-			String newCity = in.nextLine();
+			String newCity;
+			do {
+				System.out.print("\n\nCity: ");
+				in.nextLine();
+				newCity = in.nextLine().replaceAll("\\s+","");
+			}while(informationUpdateValidate(newCity, 6) == false);
 			account.getUser().setCity(newCity);
 			databaseUpdate();
+			System.out.println("\n\nCity updated to " + newCity + "\n");
 			break;
 		case 8:
-			System.out.println("State: ");
-			in.nextLine();
-			String newState = in.nextLine();
+			String newState;
+			do {
+				System.out.println("\n\nState: ");
+				in.nextLine();
+				newState = in.nextLine();
+			}while(informationUpdateValidate(newState, 7) == false);
 			account.getUser().setState(newState);
 			databaseUpdate();
+			System.out.println("\n\nState updated to " + newState + "\n");
 			break;
 		case 9:
-			System.out.println("Postal Code: ");
-			in.nextLine();
-			String newPostalCode = in.nextLine();
+			String newPostalCode;
+			do {
+				System.out.println("\n\nPostal Code: ");
+					in.nextLine();
+					newPostalCode = in.nextLine();
+			}while(informationUpdateValidate(newPostalCode, 8) == false);
 			account.getUser().setPostalCode(newPostalCode);
 			databaseUpdate();
+			System.out.println("\n\nPostal code updated to " + newPostalCode + "\n");
 			break;
 		}
 		System.out.print("Update personal Information(1)\nExit to menu screen(2)\n\nMake a selection: ");
@@ -392,22 +497,38 @@ public class ATM {
 		if(menuSelection2 == 1) {
 			updateInformation();
 		}
+		System.out.print("\n\n\n\n\n");
 		displaySubMenu();
 		
 		
 	}
 	public void closeAccount() throws IOException {
-		System.out.print("Enter PIN to close account: ");
-		int pin = in.nextInt();
-		//Add validation
-		if(pin == Integer.parseInt(account.getUser().getPin())) {
-			account.setAccountStatus('N');
-			databaseUpdate();
-			System.out.print("Account closed\n\nExit to main menu screen(ANY KEY)\n\nMake a selection: ");
-			in.nextLine();
-			in.nextLine();
-			displayMainMenu();
-		}
+		System.out.println("\n\n");
+		int i = 0;
+		String pin;
+		boolean validate = true;
+		do {
+			do {
+				System.out.print("\n\nEnter PIN to close account: ");
+				if(i == 0) {
+					in.nextLine();
+					i++;	
+				}
+				pin = in.nextLine();
+			}while(informationUpdateValidate(pin, 2) == false);
+			if(account.getUser().getPin().equals(pin)) {
+				validate = true;
+			}
+			else {
+				validate = false;
+			}
+		}while(validate == false);
+		account.setAccountStatus('N');
+		databaseUpdate();
+		System.out.print("\nAccount closed\n\nExit to main menu screen(ANY KEY)\n\nMake a selection: ");
+		in.nextLine();
+		System.out.print("\n\n\n\n\n");
+		displayMainMenu();
 	}
 	public void databaseUpdate() throws IOException {
 		String newLine = Long.toString(getBankAccount().getAccountNumber()) +
@@ -422,15 +543,202 @@ public class ATM {
  				getBankAccount().getUser().getState() + 
  				getBankAccount().getUser().getPostalCode() + 
  				getBankAccount().getAccountStatus();
-getDatabase().updateDatabase(newLine);
-int currentAccount = getDatabase().getCurrentAccount();
-database = new Database(currentAccount);
+	getDatabase().updateDatabase(newLine);
+	int currentAccount = getDatabase().getCurrentAccount();
+	database = new Database(currentAccount);
 	}
-	/*public boolean validateInput(String menu, String input) {
-		
-	}*/
+	public boolean openAccountFormatValidate(String firstName, String lastName, String pin, String birthDate, String phoneNumber, String address, String city, String state, String postalCode) {
+		boolean validate = true;
+		if(firstName.length() > 15 || firstName.isEmpty() == true) {
+			System.out.println("Invalid First Name");
+			validate = false;
+		}
+		if(lastName.length() > 20 || lastName.isEmpty() == true) {
+			System.out.println("Invalid Last Name");
+			validate = false;
+		}
+		if(pin.length() > 4 || pin.isEmpty() == true) {
+			System.out.println("Invalid PIN");
+			validate = false;
+		}
+		if(birthDate.length() != 8 || birthDate.isEmpty() == true) {
+			System.out.println("Invalid Birth Date");
+			validate = false;
+		}
+		if(phoneNumber.length() != 10 || phoneNumber.isEmpty() == true) {
+			System.out.println("Invalid Phone Number");
+			validate = false;
+		}
+		if(address.length() > 30 || address.isEmpty() == true) {
+			System.out.println("Invalid Address");
+			validate = false;
+		}
+		if(city.length() > 30 || city.isEmpty() == true) {
+			System.out.println("Invalid City");
+			validate = false;
+		}
+		if(state.length() != 2 || state.isEmpty() == true) {
+			System.out.println("Invalid State");
+			validate = false;
+		}
+		if(postalCode.length() != 5 || postalCode.isEmpty() == true) {
+			System.out.println("Invalid Postal Code");
+			validate = false;
+		}
+		String[] inputs = {firstName, lastName, pin, birthDate, phoneNumber, address, city, state, postalCode};
+		for(int index = 0; index < 9; index++) {
+			for(int i = 0; i < inputs[index].length(); i++) {
+				if(index == 0 || index == 1) {
+					if(Character.isLetter(inputs[index].charAt(i)) == false) {
+						System.out.println("Invalid Input");
+						validate = false;
+					}
+				}
+				else if(index == 6 || index == 7) {
+					if(Character.isLetter(inputs[index].charAt(i)) == false && Character.isWhitespace(inputs[index].charAt(i)) == false) {
+						System.out.println("Invalid Input");
+						validate = false;
+					}
+					
+				}
+				else if(index == 2 || index == 3 || index == 4 || index == 8) {
+					if(Character.isDigit(inputs[index].charAt(i)) == false) {
+						System.out.println("Invalid Input");
+						validate = false;
+					}
+				}
+				else {
+					if(Character.isDigit(inputs[index].charAt(i)) == false && Character.isLetter(inputs[index].charAt(i)) == false) {
+						System.out.println("Invalid Input");
+						validate = false;
+					}
+				}
+			}
+		}
+		return validate;
+	}
+	public boolean loginFormatValidate(String accountNumber, String pin) {
+		if(accountNumber.length() != 9) {
+			return false;
+		}
+		if(pin.length() != 4) {
+			return false;
+		}
+		for(int i = 0; i < 9; i++) {
+			if(Character.isDigit(accountNumber.charAt(i)) == false) {
+				return false;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			if(Character.isDigit(pin.charAt(i)) == false) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public boolean digitsValidate(String input) {
+		if(input.isEmpty()) {
+			return false;
+		}
+		for(int i = 0; i < input.length(); i++) {
+			if(Character.isDigit(input.charAt(i)) == false && input.charAt(input.length() - 3) != '.') {
+				return false;
+			}
+		}
+		return true;
+	}
+	public boolean informationUpdateValidate(String input, int code) {
+		boolean validate = true;
+		switch(code) {
+		case 0:
+			if(input.length() > 15 || input.isEmpty() == true) {
+				System.out.println("\nInvalid First Name");
+				validate = false;
+			}
+			break;
+		case 1:
+			if(input.length() > 20 || input.isEmpty() == true) {
+				System.out.println("\nInvalid Last Name");
+				validate = false;
+			}
+			break;
+		case 2:
+			if(input.length() > 4 || input.isEmpty() == true) {
+				System.out.println("\nInvalid PIN");
+				validate = false;
+			}
+			break;
+		case 3:
+			if(input.length() != 8 || input.isEmpty() == true) {
+				System.out.println("\nInvalid Birth Date");
+				validate = false;
+			}
+			break;
+		case 4:
+			if(input.length() != 10 || input.isEmpty() == true) {
+				System.out.println("\nInvalid Phone Number");
+				validate = false;
+			}
+			break;
+		case 5:
+			if(input.length() > 30 || input.isEmpty() == true) {
+				System.out.println("\nInvalid Address");
+				validate = false;
+			}
+			break;
+		case 6:
+			if(input.length() > 30 || input.isEmpty() == true) {
+				System.out.println("\nInvalid City");
+				validate = false;
+			}
+			break;
+		case 7:
+			if(input.length() != 2 || input.isEmpty() == true) {
+				System.out.println("\nInvalid State");
+				validate = false;
+			}
+			break;
+		case 8:
+			if(input.length() != 5 || input.isEmpty() == true) {
+				System.out.println("\nInvalid Postal Code");
+				validate = false;
+			}
+			break;
+		}
+		if(validate == true) {
+			for(int i = 0; i < input.length(); i++) {
+				if(code == 0 || code == 1) {
+					if(Character.isLetter(input.charAt(i)) == false) {
+						System.out.println("\nInvalid Input");
+						return false;
+					}
+					
+				}
+				else if(code == 6 || code == 7) {
+					if(Character.isLetter(input.charAt(i)) == false && Character.isWhitespace(input.charAt(i)) == false) {
+						System.out.println("\nInvalid Input");
+						return false;
+					}
+				}
+				else if(code == 2|| code == 3 || code == 4 || code == 8) {
+					if(Character.isDigit(input.charAt(i)) == false) {
+						System.out.println("\nInvalid Input");
+						return false;
+					}
+				}
+				else {
+					if(Character.isDigit(input.charAt(i)) == false && Character.isLetter(input.charAt(i)) == false) {
+						System.out.println("Invalid Input");
+						return false;
+					}
+				}
+			}
+		}
+		return validate;
+	}
 	//Actions with in an app separated by one space
 	//Applications separated by 5 spaces
 	//Action followed by OUTPUT separated by 2 spaces
+	//Message from one app to another app 3 spaces
 	
 }

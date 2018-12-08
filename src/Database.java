@@ -105,9 +105,9 @@ public class Database {
 		br.close();
 		fr.close();
 	}
-	public boolean accountValidate(long accountNumber, String pin) {
+	public boolean accountValidate(String accountNumber, String pin) {
 		for(int i = 0; i < numberOfAccounts; i++) {
-			if(accounts[i].getAccountStatus() == 'Y' && (accountNumber == accounts[i].getAccountNumber() && pin.equals(accounts[i].getUser().getPin()))) {
+			if(accounts[i].getAccountStatus() == 'Y' && (accountNumber.equals(Long.toString(accounts[i].getAccountNumber())) && pin.equals(accounts[i].getUser().getPin()))) {
 				currentAccount = i;
 				return true;
 			}
@@ -150,15 +150,19 @@ public class Database {
 	public int getCurrentAccount() {
 		return currentAccount;
 	}
+	public int getNumberOfAccounts() {
+		return numberOfAccounts;
+	}
 	public void setCurrentAccount(int currentAccount) {
 		this.currentAccount = currentAccount;
 	}
 	public int findAccount(long accountNumber) {
-		for(int i = 0; i < numberOfAccounts; i++) {
+		int i = 0;
+		for(i = 0; i < numberOfAccounts; i++) {
 			if((accountNumber == accounts[i].getAccountNumber()) && accounts[i].getAccountStatus() == 'Y') {
 				return i;
 			}
 		}
-		return -1;
+		return numberOfAccounts;
 	}
 }

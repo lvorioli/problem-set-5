@@ -1,5 +1,5 @@
-10000000112340.0            Wilson              Ryan           197101105551234567123MainStreet                 ScotchPlains                  NJ07076Y
-1000000025678681.9          Smith               John           197202115552345678123FirstAvenue                Rahway                        NJ07065Y
+1000000011234123.0          Wilson              Ryan           197101105551234567123MainStreet                 ScotchPlains                  NJ07076Y
+1000000025678686.9          Smith               John           197202115552345678123FirstAvenue                Rahway                        NJ07065Y
 10000000390121234.56        Johnson             Cindy          197303125553456789123SecondStreet               Linden                        NJ07036Y
 10000000434569501.57        Black               Janet          197404135554567890123OceanAvenue                Elizabeth                     NJ07091Y
 100000005789012345.67       Phelps              Michael        197505145555678901123RaritanRoad                Westfield                     NJ07076Y
@@ -10,4 +10,4 @@
 1000000107895120.45         Orioli              Luke           200006126145517352321SaintGeorgesPlace          Westfield                     NJ07090Y
 10000001112320.00           Orioli              Ben            200006126145517355321SaintGeorgesPlace          Westfield                     NJ07090Y
 10000001299991332.0         Curley              Robert         200006128888888888321GroveStreet                NewAlbany                     OH09090Y
-10000001378950.0            Yao                 Ken            198706129999999999333TheStreet                  Engineerburg                  PA99009Y
+10000001378950.0            Yao                 Ken            198706129999999999333TheStreet                  Elim                          PA99009Y
